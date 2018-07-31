@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import Home from './components/Home';
+import Game from './components/Game';
 
 const RootNavigator = StackNavigator({
   Main: {
@@ -9,22 +10,17 @@ const RootNavigator = StackNavigator({
     navigationOptions: {
       headerTitle: 'Home',
     },
+  },
+  Game: {
+    screen: Game,
+    navigationOptions: {
+      headerTitle: 'Planet Emoji'
+    }
   }
 });
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-       <Home />
-      
-      </View>
-    );
-  }
-}
+
+export default RootNavigator;
 
 const styles = StyleSheet.create({
   container: {
