@@ -8,7 +8,10 @@ export default class Game extends Component{
         this.state = {
             emojis: [],
             randomQuestion: 0,
-            score: 0
+            score: 0,
+            guess: '',
+            gameMessage: 'Feel the emoji, Translate the emoji!',
+            isActive: true
         }
         this.restartGame = this.restartGame.bind(this);
         this.pickRandomQuestion = this.pickRandomQuestion.bind(this);
@@ -25,7 +28,10 @@ export default class Game extends Component{
         this.setState({
             emojis: emojisArr,
             randomQuestion,
-            score:0
+            score:0,
+            guess: '',
+            gameMessage: 'Feel the emoji, Translate the emoji!',
+            isActive: true
         })
     }
     
@@ -40,29 +46,64 @@ export default class Game extends Component{
     }
     
     checkGuess() {
-        console.log(this.state.guess);
+        let { guess, score, gameMessage, emojis, randomQuestion } = Object.assign({}, this.state);
+        let transformedGuess = guess.replace(/\W/g,'').toLowerCase();
+        let transformedAnswer = emojis[randomQuestion].answer.replace(/\W/g,'').toLowerCase();
+
+        if(transformedGuess === transformedAnswer) {
+            score+=10;
+            gameMessage="Nice job!";
+            emojis = emojis.filter((emoji, index) => index !==randomQuestion);
+            randomQuestion = this.pickRandomQuestion(emojis);
+        } else {
+            gameMessage="Try Again!"
+        }
+
+        if(!emojis.length) {
+            gameMessage="You win!";
+            isActive= false;
+        }
+        // console.log(this.state.guess);
         this.setState({
-            guess: ''
+            guess: '',
+            score,
+            gameMessage,
+            randomQuestion,
+            emojis,
+            isActive
         })
     }
     
     render (){
         return (
             <View style={styles.container}>
-           {/* {this.state.emojis.map((emoji, index) => (<Text key={index}>{emoji.question}</Text>))} */}
-           <Text>SCORE:{`${this.state.score}`}</Text>
-           <Text>{
-               this.state.emojis.length && this.state.emojis[this.state.randomQuestion].question
-           }
-           </Text>
-           <TextInput 
-            onChangeText={(guess) => this.handleChange(guess)}
-            value={this.state.guess}
-            placeholder="Guess the Phrase!"
-            />
-            <Button onPress={this.checkGuess}
-            title="Make a Guess!" 
-            />
+            <Text>{this.state.gameMessage}</Text>
+            <Text style={{color: "#000000"}}>SCORE:
+                <Text style={{color: "#33FF55", fontWeight: "bold"}}> 
+                    {`${this.state.score}`}
+                </Text>
+           
+            </Text>
+
+                {
+                    this.state.isActive && (
+                        <view>
+                             <Text>{
+                                this.state.emojis.length && this.state.emojis[this.state.randomQuestion].question
+                                 }
+                             </Text>
+                            <TextInput 
+                                onChangeText={(guess) => this.handleChange(guess)}
+                                value={this.state.guess}
+                                placeholder="Guess the Phrase!"
+                            />
+                            <Button onPress={this.checkGuess}
+                            title="Make a Guess!" 
+                            />
+                        </view>
+                        )
+                    }
+                        
             <Button onPress={this.restartGame}
             title="Restart Game"
             />
