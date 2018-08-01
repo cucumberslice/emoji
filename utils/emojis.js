@@ -1,4 +1,4 @@
-export const emojis = [
+export  const emojis = [
     {question: '🤐💃', answer: 'shut up and dance'},
     {question: '👨🔛🌙', answer: 'man on the moon'},
     {question: '☔️🐱🐶', answer: 'raining cats and dogs'},

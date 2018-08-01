@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import Home from './components/Home';
 import Game from './components/Game';
 
-const RootNavigator = StackNavigator({
+const RootNavigator = createStackNavigator({
   Main: {
     screen: Home,
     navigationOptions: {
